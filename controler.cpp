@@ -69,7 +69,7 @@ void Controller::ourWay()
 
 void Controller::AddElevator()
 {
-    elevators.insert(make_pair(++elevatorCount, new Elevator(maxPerson)));
+    elevators.insert(make_pair(elevatorCount++, new Elevator(maxPerson)));
 }
 int Controller::GetmaxFloor()
 {
