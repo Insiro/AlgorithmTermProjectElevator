@@ -3,14 +3,16 @@
 #include <Elevator.h>
 using namespace std;
 
-
-int Elevator::GetFloorTarget(){
+int Elevator::GetFloorTarget()
+{
     return floorTarget;
 }
-int Elevator::GetCurrentFloor(){
+int Elevator::GetCurrentFloor()
+{
     return currentFloor;
 }
-void Elevator ::DoWork(){
+void Elevator ::DoWork()
+{
     //TODO : change status that peoplecount, targets, and things following status
 }
 Elevator ::Elevator(int Max)
@@ -32,20 +34,28 @@ vector<int> Elevator::GetWorks()
 {
     return works;
 }
-int Elevator::AddWork(int target) {
+int Elevator::AddWork(int target)
+{
     //TODO:add person who in elevator
 }
-int Elevator::AddWork(vector<int> targets) {
+int Elevator::AddWork(vector<int> targets)
+{
     //TODO:add person who in elevator as list
 }
-int Elevator::GetPeopleCount(){
+int Elevator::GetPeopleCount()
+{
     return peopleCount;
 }
-vector<int> Elevator::GetTargets(){
+vector<int> Elevator::GetTargets()
+{
     //TODO:make GetTargets
     vector<int> a;
     return a;
 }
+void Elevator::UpDateStatus(){
+    //TODO : MakeStatusUpdater
+}
+
 int main()
 {
 }

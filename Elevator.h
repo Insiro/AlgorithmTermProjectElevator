@@ -21,6 +21,7 @@ public:
     vector<int> GetTargets();
     int GetCurrentFloor();
     int GetFloorTarget();
+    void UpDateStatus();
 };
 enum ElevatorStatus
 {

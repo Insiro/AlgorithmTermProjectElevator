@@ -10,8 +10,10 @@ time_t Controller::GetStartTime()
 {
     return startTime;
 }
+
 Controller::Controller(int maxFloor, int elevatorCount, int maxPerson)
 {
+    this->maxPerson = maxPerson;
     startTime = time(NULL);
     this->maxFloor = maxFloor;
     this->elevatorCount = elevatorCount;
@@ -58,13 +60,14 @@ void Controller::DistributeJobs(distributers distributerName)
 void Controller::makeLog()
 {
     //TODO:make logs following elevator status and job queue
+    // status can use Elevator -> status, getWorks
 }
 void Controller::ourWay()
 {
     //TODO:make algorithm for distribute works
 }
 
-void Controller::AddElevator(int maxPerson)
+void Controller::AddElevator()
 {
     elevators.insert(make_pair(++elevatorCount, new Elevator(maxPerson)));
 }

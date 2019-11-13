@@ -10,6 +10,7 @@ private:
     map<int, Elevator *> elevators;
     map<int, vector<int>> jobsPerFloor;
     vector<int> jobsCountPerFloor;
+    int maxPerson;
     FILE *inputFile;
     void makeLog();
     void ourWay();
@@ -20,7 +21,7 @@ public:
     };
     Controller(int floors, int elevatorCount, int maxPerson);
     void DistributeJobs(distributers distributerName);
-    void AddElevator(int maxPerson);
+    void AddElevator();
     void PushData(pair<int, int> *data);
     bool IsJobEmpty();
     bool bAllFinished();
