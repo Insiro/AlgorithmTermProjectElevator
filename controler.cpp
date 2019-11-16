@@ -6,17 +6,14 @@
 #include "controler.h"
 #include <time.h>
 using namespace std;
-time_t Controller::GetStartTime()
-{
-    return startTime;
-}
 
 Controller::Controller(int maxFloor, int elevatorCount, int maxPerson)
 {
+
     this->maxPerson = maxPerson;
-    startTime = time(NULL);
     this->maxFloor = maxFloor;
     this->elevatorCount = elevatorCount;
+    timer = 0;
     for (int i = 0; i < elevatorCount; i++)
     {
         elevators.insert(make_pair(i, new Elevator(maxPerson, maxFloor)));
@@ -36,11 +33,11 @@ bool Controller ::IsJobEmpty()
 }
 int Controller::InsertJob(int floor, int target)
 {
-    if (target >= maxFloor || floor >= maxFloor)
+    if (target<1||target >= maxFloor||floor<1 || floor >= maxFloor)
         return -1;
     //TODO:make InsertJobs
 }
-time_t Controller::Excutes()
+int Controller::Excutes()
 {
     //TODO : Make excuter code and return finished Time
 }
@@ -59,11 +56,39 @@ void Controller::DistributeJobs(distributers distributerName)
 }
 void Controller::makeLogFile()
 {
+
     //TODO:make logs following elevator status and job queue
     // status can use Elevator -> status, getWorks
 }
-void Controller::addLog(){
-    
+void Controller::addLog()
+{
+    vector<int> queue;
+    fprintf(logFile, "TIME %d\n", timer);
+    fprintf(logFile, "Queue");
+    //print queue
+    for (int i = 0; i < maxFloor; i++)
+    {
+        fprintf(logFile, "\n%d ", i);
+        queue = jobsPerFloor.at(i);
+        for (int i = 0; i < queue.size(); i++)
+        {
+            fprintf(logFile, "%d ", jobsPerFloor);
+        }
+    }
+    //print elevator info
+    Elevator *ele;
+    vector<int> eleque;
+    for (int i = 0; i < elevatorCount; i++)
+    {
+        ele = elevators[i];
+        fprintf(logFile, "\nElevator %d %d", i, ele->GetStatus());
+        eleque = ele->GetWorks();
+        for (int i = 0; i < eleque.size(); i++)
+        {
+            fprintf(logFile, "%d ", eleque[i]);
+        }
+    }
+    fprintf(logFile,"\n");
 }
 void Controller::ourWay()
 {

@@ -6,12 +6,13 @@ class Controller
 {
 private:
     int elevatorCount, maxFloor, distributerCount;
-    time_t startTime;
+    int timer;
     map<int, Elevator *> elevators;
     map<int, vector<int>> jobsPerFloor;
     vector<int> jobsCountPerFloor;
     int maxPerson;
     FILE *inputFile;
+    FILE *logFile;
     void ourWay();
 public:
     enum distributers
@@ -30,10 +31,10 @@ public:
     int GetmaxFloor();
     int GetElevatorCount();
     int GetJobCount(int floor);
-    vector<int> GetJobCount();
-    time_t GetStartTime();
-    time_t Excutes();
+    int GetStartTime();
+    int Excutes();
     int SetInputFile(FILE *fptr);
     int SetInputFile(string fileName);
     int GetWorks();
+    vector<int> GetJobCount();
 };
