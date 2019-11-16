@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <map>
 #include <string>
-#include <controler.h>
+#include "controler.h"
 #include <time.h>
 using namespace std;
 time_t Controller::GetStartTime()
@@ -19,7 +19,7 @@ Controller::Controller(int maxFloor, int elevatorCount, int maxPerson)
     this->elevatorCount = elevatorCount;
     for (int i = 0; i < elevatorCount; i++)
     {
-        elevators.insert(make_pair(i, new Elevator(maxPerson)));
+        elevators.insert(make_pair(i, new Elevator(maxPerson, maxFloor)));
     }
 }
 bool Controller ::IsJobEmpty()
@@ -57,10 +57,13 @@ void Controller::DistributeJobs(distributers distributerName)
     }
     //TODO: make distribue on jobs
 }
-void Controller::makeLog()
+void Controller::makeLogFile()
 {
     //TODO:make logs following elevator status and job queue
     // status can use Elevator -> status, getWorks
+}
+void Controller::addLog(){
+    
 }
 void Controller::ourWay()
 {
@@ -69,7 +72,7 @@ void Controller::ourWay()
 
 void Controller::AddElevator()
 {
-    elevators.insert(make_pair(elevatorCount++, new Elevator(maxPerson)));
+    elevators.insert(make_pair(elevatorCount++, new Elevator(maxPerson, maxFloor)));
 }
 int Controller::GetmaxFloor()
 {

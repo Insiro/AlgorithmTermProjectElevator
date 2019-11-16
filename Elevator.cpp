@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <vector>
-#include <Elevator.h>
+#include "Elevator.h"
 using namespace std;
 
 int Elevator::GetFloorTarget()
@@ -11,13 +11,66 @@ int Elevator::GetCurrentFloor()
 {
     return currentFloor;
 }
+void Elevator::FindNewTarget()
+{
+    for (int i = 0; i < maxFloor; i++)
+    {
+        if (works[i] != 0)
+        {
+            if (i > currentFloor)
+            {
+                status = UpWard;
+                currentFloor++;
+            }
+            else if (i < currentFloor)
+            {
+                status = DownWard;
+                currentFloor--;
+            }
+            return;
+        }
+    }
+    status = STOP;
+    floorTarget = -1;
+}
 void Elevator ::DoWork()
 {
-    //TODO : change status that peoplecount, targets, and things following status
+
+    //change status that peoplecount, targets, and things following status
+    // not have Wroks
+    if (works[currentFloor] != 0)
+    {
+        //GET ,output
+        peopleCount - works[currentFloor];
+        works[currentFloor] = 0;
+    }
+    else
+    {
+        if (floorTarget == -1 || floorTarget == currentFloor)
+        {
+            //Elevator IDLE or Find new Target in list
+            FindNewTarget();
+        }
+        else
+        {
+            //MoveToTargetFloor
+            if (currentFloor > floorTarget)
+            {
+                status = DownWard;
+                currentFloor--;
+            }
+            else if (currentFloor < floorTarget)
+            {
+                status = UpWard;
+                currentFloor++;
+            }
+        }
+    }
 }
-Elevator ::Elevator(int Max)
+Elevator ::Elevator(int Max, int maxFloor)
 {
     this->MAX = Max;
+    this->maxFloor = maxFloor;
     peopleCount = 0;
     status = STOP;
     currentFloor = 0;
@@ -34,11 +87,12 @@ vector<int> Elevator::GetWorks()
 {
     return works;
 }
-int Elevator::AddWork(int target)
+void Elevator::AddWork(int target, int fromFloor)
 {
+    newWorks.push_back(make_pair(target, fromFloor));
     //TODO:add person who in elevator
 }
-int Elevator::AddWork(vector<int> targets)
+void Elevator::AddWork(vector<pair<int, int>> newWorks)
 {
     //TODO:add person who in elevator as list
 }
@@ -48,12 +102,12 @@ int Elevator::GetPeopleCount()
 }
 vector<int> Elevator::GetTargets()
 {
-    //TODO:make GetTargets
-    vector<int> a;
-    return a;
+    //TODO:check return is available that vector types
+    return works;
 }
-void Elevator::UpDateStatus(){
-    //TODO : MakeStatusUpdater
+void Elevator::UpdateStatus(ElevatorStatus status)
+{
+    this->status = status;
 }
 
 int main()

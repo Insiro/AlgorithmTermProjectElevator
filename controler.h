@@ -1,6 +1,6 @@
 #include <map>
 #include <vector>
-#include <Elevator.h>
+#include "Elevator.h"
 
 class Controller
 {
@@ -12,7 +12,6 @@ private:
     vector<int> jobsCountPerFloor;
     int maxPerson;
     FILE *inputFile;
-    void makeLog();
     void ourWay();
 public:
     enum distributers
@@ -20,6 +19,8 @@ public:
         OurWay
     };
     Controller(int floors, int elevatorCount, int maxPerson);
+    void makeLogFile();
+    void addLog();
     void DistributeJobs(distributers distributerName);
     void AddElevator();
     void PushData(pair<int, int> *data);
