@@ -1,4 +1,10 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <map>
+#include <string>
+#include <time.h>
+#include <tuple>
 #include <vector>
 #include "Elevator.h"
 
@@ -14,6 +20,7 @@ private:
     FILE *inputFile;
     FILE *logFile;
     void ourWay();
+
 public:
     enum distributers
     {

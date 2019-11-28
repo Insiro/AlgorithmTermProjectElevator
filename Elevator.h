@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <vector>
+#include<tuple>
 enum ElevatorStatus;
 class Elevator
 {

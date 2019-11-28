@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <vector>
 #include "Elevator.h"
 using namespace std;
 

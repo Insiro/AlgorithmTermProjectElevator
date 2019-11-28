@@ -1,10 +1,4 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <map>
-#include <string>
 #include "controler.h"
-#include <time.h>
 using namespace std;
 
 Controller::Controller(int maxFloor, int elevatorCount, int maxPerson)
