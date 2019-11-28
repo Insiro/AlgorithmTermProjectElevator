@@ -26,6 +26,7 @@ public:
     vector<int> GetWorks();
     void AddWork(int target,int personCount);
     void AddWork(vector<pair<int, int>>newWorks);
+    void setMiddleTarget(int MTarget);
     int GetPeopleCount();
     int GetCurrentFloor();
     int GetFloorTarget();

@@ -189,8 +189,10 @@ void Elevator::AddWork(int target, int personCount)
 }
 void Elevator::AddWork(vector<pair<int, int>> newWorks)
 {
-
-    //TODO:add person who in elevator as list
+    for(int i=0;i<newWorks.size();i++){
+        works.at( newWorks.at(i).first)+=newWorks.at(i).second;
+        peopleCount+=newWorks.at(i).second;
+    }
 }
 int Elevator::GetPeopleCount()
 {
@@ -204,7 +206,9 @@ int Elevator::GetmiddleTarget()
 {
     return middleTarget;
 }
-
+void Elevator::setMiddleTarget(int MTarget){
+    
+}
 int main()
 {
 }
