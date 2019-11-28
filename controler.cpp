@@ -29,7 +29,10 @@ int Controller::InsertJob(int floor, int target)
 {
     if (target<1||target >= maxFloor||floor<1 || floor >= maxFloor)
         return -1;
-    //TODO:make InsertJobs
+
+    jobsPerFloor.at[floor].push_back(target);
+    jobsCountPerFloor[floor] += target;
+    return 0;
 }
 int Controller::Excutes()
 {
@@ -113,13 +116,15 @@ vector<int> Controller::GetJobCount()
 {
     return jobsCountPerFloor;
 }
+
+
 int Controller::GetJobCount(int floor)
 {
-    if (floor >= maxFloor)
-    {
+    if (floor >= maxFloor || floor < 0) {
         return -1;
     }
     return jobsCountPerFloor[floor];
+
 }
 int Controller::SetInputFile(FILE *fptr)
 {
