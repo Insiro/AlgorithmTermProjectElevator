@@ -12,6 +12,8 @@ private:
     int peopleCount;
     int maxFloor;
     int queuePersonCount;
+    int newWorksCount;
+    int middleTarget;
     vector<int> works;
     vector<tuple<int, int,int>> newWorks;
     void FindNewTarget();
@@ -22,13 +24,12 @@ public:
     void DoWork();
     vector<int> GetTargets();
     vector<int> GetWorks();
-    void AddWork(int target, int fromFloor,int personCount);
-    void AddWork(vector<tuple<int,int, int>>newWorks);
+    void AddWork(int target,int personCount);
+    void AddWork(vector<pair<int, int>>newWorks);
     int GetPeopleCount();
     int GetCurrentFloor();
     int GetFloorTarget();
-    
-    void UpdateStatus(ElevatorStatus status);
+    int GetmiddleTarget();
 };
 enum ElevatorStatus
 {
