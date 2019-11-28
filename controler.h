@@ -7,6 +7,7 @@
 #include <tuple>
 #include <vector>
 #include "Elevator.h"
+using namespace std;
 
 class Controller
 {
@@ -31,7 +32,7 @@ public:
     void addLog();
     void DistributeJobs(distributers distributerName);
     void AddElevator();
-    void PushData(pair<int, int> *data);
+    void PushData(int eleNum,pair<int,int> data);		// elevator 번호  목적지 목적지당 사람수
     bool IsJobEmpty();
     bool bAllFinished();
     int InsertJob(int floor, int target);

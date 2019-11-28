@@ -89,6 +89,14 @@ void Controller::ourWay()
     //TODO:make algorithm for distribute works
 }
 
+
+void Controller::PushData(int elNum, pair<int,int> data)
+{
+    (elevators.find(elNum))->AddWork(make_pair(data.first, data.second));
+    jobsCountPerFloor[data.first] -= data.second;       // 엘리베이터에 더해준 만큼 남아있는 사람 수를 줄인다.
+}
+
+
 void Controller::AddElevator()
 {
     elevators.insert(make_pair(elevatorCount++, new Elevator(maxPerson, maxFloor)));
