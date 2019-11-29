@@ -12,7 +12,6 @@ int Elevator::GetCurrentFloor()
 void Elevator::FindNewTarget()
 {
     status = STOP;
-    //TODO:checking newWorkQueue is must be excuted
     for (int i = 0; i < maxFloor; i++)
     {
         if (works[i] != 0)
@@ -132,6 +131,7 @@ void Elevator ::DoWork()
             //GET ,output
             peopleCount - works[currentFloor];
             works[currentFloor] = 0;
+            status = (currentFloor > floorTarget) ? DownWard : UpWard;
         }
         // not have Wroks
         else
@@ -184,14 +184,15 @@ vector<int> Elevator::GetWorks()
 }
 void Elevator::AddWork(int target, int personCount)
 {
-    works.at(target)+=personCount;
-    peopleCount+=personCount;
+    works.at(target) += personCount;
+    peopleCount += personCount;
 }
 void Elevator::AddWork(vector<pair<int, int>> newWorks)
 {
-    for(int i=0;i<newWorks.size();i++){
-        works.at( newWorks.at(i).first)+=newWorks.at(i).second;
-        peopleCount+=newWorks.at(i).second;
+    for (int i = 0; i < newWorks.size(); i++)
+    {
+        works.at(newWorks.at(i).first) += newWorks.at(i).second;
+        peopleCount += newWorks.at(i).second;
     }
 }
 int Elevator::GetPeopleCount()
@@ -206,8 +207,9 @@ int Elevator::GetmiddleTarget()
 {
     return middleTarget;
 }
-void Elevator::setMiddleTarget(int MTarget){
-    
+void Elevator::setMiddleTarget(int MTarget)
+{
+    middleTarget = MTarget;
 }
 int main()
 {

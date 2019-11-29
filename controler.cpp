@@ -1,4 +1,5 @@
 #include "controler.h"
+#include "Elevator.h"
 using namespace std;
 
 Controller::Controller(int maxFloor, int elevatorCount, int maxPerson)
@@ -27,7 +28,7 @@ bool Controller ::IsJobEmpty()
 }
 int Controller::InsertJob(int floor, int target)
 {
-    if (target<1||target >= maxFloor||floor<1 || floor >= maxFloor)
+    if (target < 1 || target >= maxFloor || floor < 1 || floor >= maxFloor)
         return -1;
 
     jobsPerFloor.at[floor].push_back(target);
@@ -85,20 +86,20 @@ void Controller::addLog()
             fprintf(logFile, "%d ", eleque[i]);
         }
     }
-    fprintf(logFile,"\n");
+    fprintf(logFile, "\n");
 }
 void Controller::ourWay()
 {
     //TODO:make algorithm for distribute works
 }
 
-
-void Controller::PushData(int elNum, pair<int,int> data)
+void Controller::PushData(int elNum, pair<int, int> data)
 {
-    (elevators.find(elNum))->AddWork(make_pair(data.first, data.second));
-    jobsCountPerFloor[data.first] -= data.second;       // 엘리베이터에 더해준 만큼 남아있는 사람 수를 줄인다.
-}
 
+    (elevators[elNum])->AddWork(data.first, data.second);
+    //(elevators.find(elNum))->AddWork(data.first, data.second);
+    jobsCountPerFloor[data.first] -= data.second; // 엘리베이터에 더해준 만큼 남아있는 사람 수를 줄인다.
+}
 
 void Controller::AddElevator()
 {
@@ -117,14 +118,13 @@ vector<int> Controller::GetJobCount()
     return jobsCountPerFloor;
 }
 
-
 int Controller::GetJobCount(int floor)
 {
-    if (floor >= maxFloor || floor < 0) {
+    if (floor >= maxFloor || floor < 0)
+    {
         return -1;
     }
     return jobsCountPerFloor[floor];
-
 }
 int Controller::SetInputFile(FILE *fptr)
 {

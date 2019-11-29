@@ -6,6 +6,7 @@ class Elevator
 {
 private:
     ElevatorStatus status;
+    ElevatorStatus preStatus;
     int currentFloor;
     int MAX;
     int floorTarget;
@@ -25,7 +26,7 @@ public:
     vector<int> GetTargets();
     vector<int> GetWorks();
     void AddWork(int target,int personCount);
-    void AddWork(vector<pair<int, int>>newWorks);
+    void AddWork(vector<pair<int , int >>newWorks);
     void setMiddleTarget(int MTarget);
 	int GetPeopleCount();
     int GetCurrentFloor();
