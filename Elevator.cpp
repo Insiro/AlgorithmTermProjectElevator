@@ -20,10 +20,12 @@ void Elevator::FindNewTarget()
             if (i > currentFloor)
             {
                 status = UpWard;
+                currentFloor ++;
             }
             else if (i < currentFloor)
             {
                 status = DownWard;
+                currenFloor --;
             }
             break;
         }
@@ -38,7 +40,6 @@ void Elevator::FindNewTarget()
                 status = DownWard;
         }
     }
-    
 }
 void Elevator ::DoWork()
 {
@@ -46,7 +47,6 @@ void Elevator ::DoWork()
     //change status that peoplecount, targets, and things following status
     if (status == STOP)
     {
-        
         //teat works
         if (works[currentFloor] != 0)
         {
@@ -58,15 +58,16 @@ void Elevator ::DoWork()
         // not have Wroks
         else
         {
-            if (floorTarget == -1 || floorTarget == currentFloor)
+            if(floorTarget != currentFloor){
+                //updateStatus to move Target
+                // 일이 있으나 stop 상태 -> 일을 방금 받은 상태
+                status = (currentFloor > floorTarget) ? DownWard : UpWard;
+            }
+            else 
             {
+                //if (floorTarget == -1 || floorTarget == currentFloor)
                 //Elevator IDLE or Find new Target in list
                 FindNewTarget();
-            }
-            else
-            {
-                //updateStatus to move Target
-                status = (currentFloor > floorTarget) ? DownWard : UpWard;
             }
         }
     }

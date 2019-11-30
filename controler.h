@@ -29,9 +29,10 @@ private:
     tuple<int /*timestamp*/, int/*Count*/,int/*start floor*/,int/*target floor*/> tempQueue;
     distributers dist;
     void ourWay();
+    void originalWay();
 
 public:
-    Controller(int floors, int elevatorCount, int maxPerson);
+    Controller(int floors, int elevatorCount, int maxPerson, distributers dis);
     void makeLogFile();
     void addLog();
     void DistributeJobs();

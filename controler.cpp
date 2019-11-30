@@ -2,9 +2,9 @@
 #include "Elevator.h"
 using namespace std;
 
-Controller::Controller(int maxFloor, int elevatorCount, int maxPerson)
+Controller::Controller(int floors, int elevatorCount, int maxPerson, distributers dis)
 {
-
+    dist = dis;
     this->maxPerson = maxPerson;
     this->maxFloor = maxFloor;
     this->elevatorCount = elevatorCount;
@@ -64,6 +64,9 @@ int Controller::Excutes()
         addLog();
         timer++;
     }
+    fclose(inputFile);
+    fclose(logFile);
+    //fin
 }
 bool Controller::bAllFinished()
 {
@@ -85,8 +88,10 @@ void Controller::DistributeJobs()
         ourWay();
         break;
     case originalWay:
+    originalWay();
         break;
     default:
+    printf("Error ");
         exit(0);
         break;
     }
@@ -141,10 +146,6 @@ void Controller::addLog()
     }
     fprintf(logFile, "\n");
 }
-void Controller::ourWay()
-{
-    //TODO:make algorithm for distribute works
-}
 
 void Controller::PushData(int elNum, pair<int, int> data)
 {
@@ -197,6 +198,18 @@ int Controller::SetInputFile(string fileName)
     }
     return 0;
 }
+void Controller::ourWay()
+{
+    //TODO:make algorithm for distribute works
+}
+void Controller::originalWay()
+{
+    //TODO:make algorithm for distribute works
+}
 int main()
 {
+    //Controller con(25, 2, 8, OurWay);
+    Controller con(25, 2, 8, origianlWay);
+    con.SetInputFile("input.txt");
+    con.Excutes();
 }
