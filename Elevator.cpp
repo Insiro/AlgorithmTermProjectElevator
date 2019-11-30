@@ -30,101 +30,23 @@ void Elevator::FindNewTarget()
     }
     if (status == STOP)
     {
-        if (currentFloor > middleTarget)
-            status = UpWard;
-        else if (currentFloor < middleTarget)
-            status = DownWard;
-    }
-    // it is work with new Works
-    if (false)
-    {
-        int tempD, temp, tempU;
-        tempU = tempD = currentFloor;
-        for (vector<tuple<int, int, int>>::iterator newWorkIterator = newWorks.begin(); newWorkIterator != newWorks.end();)
+        if (middleTarget != NULL)
         {
-            temp = get<0>(*newWorkIterator);
-            if (status = UpWard)
-            {
-                if (floorTarget < temp)
-                    floorTarget = temp;
-            }
-            else if (status = DownWard)
-            {
-                if (floorTarget > temp)
-                    floorTarget = temp;
-            }
-            else
-            {
-                if (temp > tempU)
-                {
-                    tempU = temp;
-                }
-                else if (temp < tempD)
-                {
-                    tempD = temp;
-                }
-            }
-        }
-
-        if (status == STOP)
-        {
-            int UpTagetToCurrent = abs(tempU - currentFloor), DownTargetTOCurrent = abs(tempD - currentFloor);
-            if (UpTagetToCurrent > DownTargetTOCurrent)
-            {
+            if (currentFloor > middleTarget)
+                status = UpWard;
+            else if (currentFloor < middleTarget)
                 status = DownWard;
-            }
-            else if (DownTargetTOCurrent > UpTagetToCurrent)
-            {
-                status = UpWard;
-            }
-            else if (DownTargetTOCurrent == currentFloor)
-            {
-                if (currentFloor > maxFloor / 2)
-                {
-                    status = DownWard;
-                }
-                else if (currentFloor < maxFloor / 2)
-                {
-                    status = UpWard;
-                }
-                else
-                {
-                    status = STOP;
-                }
-            }
-            else if (DownTargetTOCurrent == UpTagetToCurrent)
-            {
-                status = UpWard;
-            }
         }
     }
+    
 }
 void Elevator ::DoWork()
 {
-    tuple<int, int, int> tempTuple;
     int tempPersonCount;
     //change status that peoplecount, targets, and things following status
     if (status == STOP)
     {
-        //it is work for with newWork Queue
-        if (false)
-        { //region Get new Work from newWorks queue
-            for (vector<tuple<int, int, int>>::iterator newWorkIterator = newWorks.begin(); newWorkIterator != newWorks.end();)
-            {
-                if (get<0>(*newWorkIterator) == currentFloor)
-                {
-                    tempPersonCount = get<2>(*newWorkIterator);
-                    works.at(get<1>(*newWorkIterator)) = tempPersonCount;
-                    queuePersonCount -= tempPersonCount;
-                    peopleCount += tempPersonCount;
-                    newWorksCount -= tempPersonCount;
-                    newWorks.erase(newWorkIterator);
-                    continue;
-                }
-                newWorkIterator++;
-            }
-            //endregion
-        }
+        
         //teat works
         if (works[currentFloor] != 0)
         {
@@ -186,6 +108,8 @@ void Elevator::AddWork(int target, int personCount)
 {
     works.at(target) += personCount;
     peopleCount += personCount;
+    if (middleTarget == floorTarget)
+        middleTarget = NULL;
 }
 void Elevator::AddWork(vector<pair<int, int>> newWorks)
 {
@@ -194,6 +118,8 @@ void Elevator::AddWork(vector<pair<int, int>> newWorks)
         works.at(newWorks.at(i).first) += newWorks.at(i).second;
         peopleCount += newWorks.at(i).second;
     }
+    if (middleTarget == floorTarget)
+        middleTarget = NULL;
 }
 int Elevator::GetPeopleCount()
 {

@@ -26,36 +26,89 @@ bool Controller ::IsJobEmpty()
     }
     return false;
 }
-int Controller::InsertJob(int floor, int target)
+int Controller::InsertJob()
 {
-    if (target < 1 || target >= maxFloor || floor < 1 || floor >= maxFloor)
-        return -1;
 
-    jobsPerFloor.at[floor].push_back(target);
-    jobsCountPerFloor[floor] += target;
-    return 0;
+    if (timer == get<0>(tempQueue))
+    {
+        jobsPerFloor[get<2>(tempQueue)].push_back(get<3>(tempQueue));
+    }
+    else if (timer != -1)
+    {
+        return 0;
+    }
+    int time, Count, init, target;
+    while (true)
+    {
+        fscanf(inputFile, "%d %d %d %d", &time, &Count, &init, &target);
+        if (time != timer)
+        {
+            tempQueue = make_tuple(time, Count, init, target);
+            break;
+        }
+        jobsPerFloor[init].push_back(target);
+    }
 }
 int Controller::Excutes()
 {
+    timer = 0;
     //TODO : Make excuter code and return finished Time
+    while (!bAllFinished())
+    {
+        InsertJob();
+        DistributeJobs();
+        for (int i = 0; i < elevatorCount; i++)
+        {
+            elevators[i]->DoWork();
+        }
+        addLog();
+        timer++;
+    }
 }
 bool Controller::bAllFinished()
 {
     //TODO : Check all work is finished
-    return true;
-}
-void Controller::DistributeJobs(distributers distributerName)
-{
-    if (distributerName == OurWay)
+    for (int i = 0; i < elevatorCount; i++)
     {
+        if ((elevators[i])->GetmiddleTarget() != NULL)
+        {
+            return false;
+        }
+    }
+    return (IsJobEmpty()) ? true : false;
+}
+void Controller::DistributeJobs()
+{
+    switch (dist)
+    {
+    case OurWay:
         ourWay();
+        break;
+    case originalWay:
+        break;
+    default:
+        exit(0);
+        break;
     }
     //TODO: make distribue on jobs
 }
 void Controller::makeLogFile()
 {
 
-    //TODO:make logs following elevator status and job queue
+    string fileName = "log";
+    switch (dist)
+    {
+    case originalWay:
+        fileName += "_origin";
+        break;
+    case OurWay:
+        fileName += "_ours";
+    default:
+        exit(0);
+        break;
+    }
+    fileName += ".txt";
+    logFile = fopen(fileName.c_str(), "w");
     // status can use Elevator -> status, getWorks
 }
 void Controller::addLog()

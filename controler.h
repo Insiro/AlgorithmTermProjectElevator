@@ -11,35 +11,38 @@ using namespace std;
 
 class Controller
 {
+    enum distributers
+    {
+        originalWay,
+        OurWay
+    };
+
 private:
     int elevatorCount, maxFloor, distributerCount;
     int timer;
+    int maxPerson;
     map<int, Elevator *> elevators;
     map<int, vector<int>> jobsPerFloor;
     vector<int> jobsCountPerFloor;
-    int maxPerson;
     FILE *inputFile;
     FILE *logFile;
+    tuple<int /*timestamp*/, int/*Count*/,int/*start floor*/,int/*target floor*/> tempQueue;
+    distributers dist;
     void ourWay();
 
 public:
-    enum distributers
-    {
-        OurWay
-    };
     Controller(int floors, int elevatorCount, int maxPerson);
     void makeLogFile();
     void addLog();
-    void DistributeJobs(distributers distributerName);
+    void DistributeJobs();
     void AddElevator();
-    void PushData(int eleNum,pair<int,int> data);		// elevator 번호  목적지 목적지당 사람수
+    void PushData(int eleNum, pair<int/*target floor*/, int/*person Count*/> data); // elevator 번호  목적지 목적지당 사람수
     bool IsJobEmpty();
     bool bAllFinished();
-    int InsertJob(int floor, int target);
+    int InsertJob(); //get data from input files
     int GetmaxFloor();
     int GetElevatorCount();
     int GetJobCount(int floor);
-    int GetStartTime();
     int Excutes();
     int SetInputFile(FILE *fptr);
     int SetInputFile(string fileName);

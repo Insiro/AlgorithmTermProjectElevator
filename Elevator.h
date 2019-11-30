@@ -16,7 +16,7 @@ private:
     int newWorksCount;
     int middleTarget;
     vector<int> works;
-    vector<tuple<int, int,int>> newWorks;
+    //vector<tuple<int, int,int>> newWorks;
     void FindNewTarget();
 public:
     Elevator(int Max, int maxFloor);
