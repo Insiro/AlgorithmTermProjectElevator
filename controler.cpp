@@ -48,6 +48,7 @@ int Controller::InsertJob()
         }
         jobsPerFloor[init].push_back(target);
     }
+    sort(jobsPerFloor);
 }
 int Controller::Excutes()
 {
@@ -88,14 +89,13 @@ void Controller::DistributeJobs()
         ourWay();
         break;
     case originalWay:
-    originalWay();
+        originalWay();
         break;
     default:
-    printf("Error ");
+        printf("Error ");
         exit(0);
         break;
     }
-    //TODO: make distribue on jobs
 }
 void Controller::makeLogFile()
 {
@@ -149,7 +149,6 @@ void Controller::addLog()
 
 void Controller::PushData(int elNum, pair<int, int> data)
 {
-
     (elevators[elNum])->AddWork(data.first, data.second);
     //(elevators.find(elNum))->AddWork(data.first, data.second);
     jobsCountPerFloor[data.first] -= data.second; // 엘리베이터에 더해준 만큼 남아있는 사람 수를 줄인다.
@@ -200,11 +199,94 @@ int Controller::SetInputFile(string fileName)
 }
 void Controller::ourWay()
 {
-    //TODO:make algorithm for distribute works
+
+    for (int i = 0; i < elevatorCount; i++)
+    {
+        //TODO:make algorithm for distribute works
+
+        //make change middle Target
+        if (!elevators[i]->IsFull())
+            elevators[i]->setMiddleTarget(
+                GetClosestFloor(elevators[i]->GetCurrentFloor(), elebvators[i]->GetStatus(), true));
+    }
 }
 void Controller::originalWay()
 {
-    //TODO:make algorithm for distribute works
+
+    for (int i = 0; i < elevatorCount; i++)
+    {
+
+        if (!elevators[i]->IsFull())
+        {
+            //TODO:make Inputs
+            for (int j = 0; j < jobsCountPerFloor[elevators[i]->GetCurrentFloor]; j++)
+            {
+            }
+            //change middle Target
+            elevators[i]->setMiddleTarget(
+                GetClosestFloor(elevators[i]->GetCurrentFloor(), elebvators[i]->GetStatus(), false));
+        }
+    }
+}
+int Controller ::GetClosestFloor(int CurrentFloor, ElevatorStatus status, bool includeOtherWay)
+{
+
+    if (ststus == UpWard)
+    {
+        for (int i = CurrentFloor + 1; i < maxFloor; i++)
+        {
+            if (jobsPerFloor[i].size() != 0)
+            {
+                if (includeOtherWay)
+                {
+                    return i;
+                }
+                for (int j = 0; j < jobsPerFloor[i].size(); j++)
+                {
+                    if (jonsPerFloor[i].at[j] > i || jobsPerFloor[i].at[j] == maxFloor - 1)
+                    {
+                        return i;
+                    }
+                }
+            }
+        }
+    }
+    else if (status == DownWard)
+    {
+        for (int i = 0; i < CurrentFloor; i++)
+        {
+            if (jobsPerFloor[i].size() != 0)
+            {
+                if (includeOtherWay)
+                {
+                    return i;
+                }
+                for (int j = jobsPerFloor[i].size(); j > 0; j--)
+                {
+                    if (jobsPerFloor[i].at[j - 1] == 0 || jonsPerFloor[i].at[j - 1] < i)
+                    {
+                        return i;
+                    }
+                }
+            }
+        }
+    }
+    else //status == STOP
+    {
+        int checkPoint = (CurrentFloor > maxFloor - CurrentFloor) ? CurrentFloor : maxFloor - CurrentFloor;
+        for (int i = 0; i < checkPoint; i++)
+        {
+            if (jobsPerFloor[CurrentFloor + i] < maxFloor && jobsPerFloor[CurrentFloor + i].size() != 0)
+            {
+                return i;
+            }
+            else if (jobsPerFloor[CurrentFloor - i] >= 0 && jobsPerFloor[CurrentFloor - i].size() != 0)
+            {
+                return i;
+            }
+        }
+    }
+    return NULL;
 }
 int main()
 {

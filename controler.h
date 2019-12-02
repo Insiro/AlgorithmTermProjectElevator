@@ -6,6 +6,7 @@
 #include <time.h>
 #include <tuple>
 #include <vector>
+#include<algorithm>
 #include "Elevator.h"
 using namespace std;
 
@@ -37,7 +38,7 @@ public:
     void addLog();
     void DistributeJobs();
     void AddElevator();
-    void PushData(int eleNum, pair<int/*target floor*/, int/*person Count*/> data); // elevator 번호  목적지 목적지당 사람수
+    void PushData(int eleNum, pair<int/*target floor*/, int/*person Count*/> data);
     bool IsJobEmpty();
     bool bAllFinished();
     int InsertJob(); //get data from input files
@@ -48,5 +49,6 @@ public:
     int SetInputFile(FILE *fptr);
     int SetInputFile(string fileName);
     int GetWorks();
+    int GetClosestFloor(int CurrentFloor, ElevatorStatus status, bool includeOtherWay);
     vector<int> GetJobCount();
 };

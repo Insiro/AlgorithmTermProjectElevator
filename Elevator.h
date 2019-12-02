@@ -27,11 +27,11 @@ public:
     vector<int> GetWorks();
     void AddWork(int target,int personCount);
     void AddWork(vector<pair<int , int >>newWorks);
-    void setMiddleTarget(int MTarget);
+    void SetMiddleTarget(int MTarget);
 	int GetPeopleCount();
     int GetCurrentFloor();
-    int GetFloorTarget();
-    int GetmiddleTarget();
+    int GetFloorTarget();   //최고 층이나 최저 층  
+    int GetMiddleTarget();  // 중간에 거치는 층
 };
 enum ElevatorStatus
 {

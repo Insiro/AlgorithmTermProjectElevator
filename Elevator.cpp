@@ -99,7 +99,7 @@ ElevatorStatus Elevator ::GetStatus()
 }
 bool Elevator ::IsFull()
 {
-    return peopleCount == MAX;
+    return peopleCount >= MAX;
 }
 vector<int> Elevator::GetWorks()
 {
@@ -130,11 +130,11 @@ vector<int> Elevator::GetTargets()
 {
     return works;
 }
-int Elevator::GetmiddleTarget()
+int Elevator::GetMiddleTarget()
 {
     return middleTarget;
 }
-void Elevator::setMiddleTarget(int MTarget)
+void Elevator::SetMiddleTarget(int MTarget)
 {
     middleTarget = MTarget;
 }
