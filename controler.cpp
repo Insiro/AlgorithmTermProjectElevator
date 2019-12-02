@@ -175,7 +175,7 @@ Controller::Controller(int floors, int elevatorCount, int maxPerson, distributer
         }
         return jobsCountPerFloor[floor];
     }
-    int Controller::SetInputFile(FILE * fptr)
+    int Controller::SetInputFile(FILE * fptr)       
     {
         inputFile = fptr;
         if (inputFile == NULL)
