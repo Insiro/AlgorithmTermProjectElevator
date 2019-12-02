@@ -1,19 +1,60 @@
 #include <iostream>
-//#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 //#include <map>
 #include <string>
 //#include <time.h>
-//#include <tuple>
-//#include <vector>
+#include <tuple>
+#include <vector>
 #include <algorithm>
-#include "elevator.h"
+//#include "elevator.h"
 using namespace std;
 enum distributers
 {
     originalWay=0,
     OurWay
 };
+enum ElevatorStatus
+{
+    STOP = 0,
+    UpWard,
+    DownWard
+};
+
+
+class Elevator
+{
+private:
+    ElevatorStatus status;
+    ElevatorStatus preStatus;
+    int currentFloor;
+    int maxPerson;
+    int floorTarget;
+    int peopleCount;
+    int maxFloor;
+    int queuePersonCount;
+    int newWorksCount;
+    int middleTarget;
+    vector<int> works;
+    //vector<tuple<int, int,int>> newWorks;
+    void FindNewTarget();
+
+public:
+    Elevator(int Max, int maxFloor);
+    ElevatorStatus GetStatus();
+    bool IsFull();
+    void DoWork();
+    vector<int> GetTargets();
+    vector<int> GetWorks();
+    void AddWork(int target, int personCount);
+    void AddWork(vector<pair<int, int>> newWorks);
+    void SetMiddleTarget(int MTarget);
+    int GetPeopleCount();
+    int GetCurrentFloor();
+    int GetFloorTarget();
+    int GetMiddleTarget();
+};
+
 class Controller
 {
 private:
@@ -27,6 +68,7 @@ private:
     vector<int> jobsCountPerFloor;
     FILE *inputFile;
     FILE *logFile;
+    int tempTime, tempS, tempT;
     tuple<int /*timestamp*/, int /*Count*/, int /*start floor*/, int /*target floor*/> tempQueue;
     distributers dist;
     void ourWay();

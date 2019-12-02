@@ -1,15 +1,163 @@
 #include "controler.h"
 //#include "elevator.h"
 using namespace std;
+using namespace std;
 
+int Elevator::GetFloorTarget()
+{
+    return floorTarget;
+}
+int Elevator::GetCurrentFloor()
+{
+    return currentFloor;
+}
+void Elevator::FindNewTarget()
+{
+    status = STOP;
+    for (int i = 0; i < maxFloor; i++)
+    {
+        if (works[i] != 0)
+        {
+            floorTarget = i;
+            if (i > currentFloor)
+            {
+                status = UpWard;
+                currentFloor ++;
+            }
+            else if (i < currentFloor)
+            {
+                status = DownWard;
+                currentFloor --;
+            }
+            break;
+        }
+    }
+    if (status == STOP)
+    {
+        if (middleTarget != -1)
+        {
+            if (currentFloor > middleTarget)
+                status = UpWard;
+            else if (currentFloor < middleTarget)
+                status = DownWard;
+        }
+    }
+}
+void Elevator ::DoWork()
+{
+    int tempPersonCount;
+   // ElevatorStatus status = this->status;
+    //change status that peoplecount, targets, and things following status
+    if (status == STOP)
+    {
+        //teat works
+        if (works[currentFloor] != 0)
+        {
+            //GET ,output
+            peopleCount - works[currentFloor];
+            works[currentFloor] = 0;
+            status = (currentFloor > floorTarget) ? DownWard : UpWard;
+        }
+        // not have Wroks
+        else
+        {
+            if(floorTarget != currentFloor){
+                //updateStatus to move Target
+                // 일이 있으나 stop 상태 -> 일을 방금 받은 상태
+                status = (currentFloor > floorTarget) ? DownWard : UpWard;
+            }
+            else 
+            {
+                //if (floorTarget == -1 || floorTarget == currentFloor)
+                //Elevator IDLE or Find new Target in list
+                FindNewTarget();
+            }
+        }
+    }
+    else if (status == UpWard)
+    {
+        currentFloor++;
+    }
+    else
+    {
+        currentFloor--;
+    }
+
+    if (currentFloor == floorTarget || currentFloor == middleTarget)
+    {
+        status = STOP;
+    }
+}
+Elevator ::Elevator(int max, int maxFloor)
+{
+    this->maxPerson = max;
+    this->maxFloor = maxFloor;
+    this->peopleCount = 0;
+    status = STOP;
+    this->currentFloor = 0;
+}
+ElevatorStatus Elevator ::GetStatus()
+{
+    return status;
+}
+bool Elevator ::IsFull()
+{
+    return peopleCount >=maxPerson;
+}
+vector<int> Elevator::GetWorks()
+{
+    return works;
+}
+void Elevator::AddWork(int target, int personCount)
+{
+    works.at(target) += personCount;
+    peopleCount += personCount;
+    if (middleTarget == floorTarget)
+        middleTarget = -1;
+}
+void Elevator::AddWork(vector<pair<int, int>> newWorks)
+{
+    for (int i = 0; i < newWorks.size(); i++)
+    {
+        works.at(newWorks.at(i).first) += newWorks.at(i).second;
+        peopleCount += newWorks.at(i).second;
+    }
+    if (middleTarget == floorTarget)
+        middleTarget = -1;
+}
+int Elevator::GetPeopleCount()
+{
+    return peopleCount;
+}
+vector<int> Elevator::GetTargets()
+{
+    return works;
+}
+int Elevator::GetMiddleTarget()
+{
+    return middleTarget;
+}
+void Elevator::SetMiddleTarget(int MTarget)
+{
+    middleTarget = MTarget;
+}
 Controller::Controller(int floors, int elevatorCount, int maxPerson, distributers dis)
 {
     dist = dis;
-    tempQueue = make_tuple(-1,0,0,0);
+    tempTime = -1;
+    //tempQueue = make_tuple(-1,0,0,0);
     this->maxPerson = maxPerson;
     this->maxFloor = maxFloor;
     this->elevatorCount = elevatorCount;
     timer = 0;
+    printf("%d \n",jobsPerFloor.size());
+    for(int i=0;i<maxFloor;i++){
+        vector<int> a(0);
+        jobsPerFloor.push_back(a);
+        jobsCountPerFloor.push_back(0);
+    }
+    printf("%d \n",jobsCountPerFloor.size());
+    printf("%d \n",jobsPerFloor.size());
     for (int i = 0; i < elevatorCount; i++)
     {
         elevators.push_back(new Elevator(maxPerson, maxFloor));
@@ -30,29 +178,38 @@ bool Controller ::IsJobEmpty()
 int Controller::InsertJob()
 {
 
-    if (timer == get<0>(tempQueue))
-    {
-        jobsPerFloor[get<2>(tempQueue)].push_back(get<3>(tempQueue));
-        jobsCountPerFloor[get<2>(tempQueue)]++;
+    if( tempTime ==-1){
+
     }
-    else if (timer != -1)
+    if (timer == tempTime)
+    {
+        jobsPerFloor[tempS].push_back(tempT);
+        jobsCountPerFloor[tempS]++;
+    }
+    else if (tempTime != -1)
     {
         return 0;
     }
-    int time, Count, init, target;
+    int time, Count, init, targets;
     while (true)
     {
-        fscanf(inputFile, "%d %d %d %d", &time, &Count, &init, &target);
+        fscanf(inputFile, "%d %d %d %d", &time, &Count, &init, &targets);
+        init -=1;
+        targets -=1;
         if (time != timer)
         {
-            tempQueue = make_tuple(time, Count, init, target);
+            tempTime = time;
+            tempS = init;
+            tempT = targets;
+            //tempQueue = make_tuple(time, Count, init, target);
             break;
         }
-        jobsPerFloor[init].push_back(target);
+        jobsPerFloor.at(init).push_back(targets);
         jobsCountPerFloor[init]++;
     }
     for(int i=0;i<maxFloor;i++)
         sort(jobsPerFloor.at(i).begin(),jobsPerFloor.at(i).end());
+    return 1;
 }
 int Controller::Excutes()
 {
@@ -543,6 +700,7 @@ int main()
 {
     //Controller con(25, 2, 8, OurWay);
     Controller con(25, 2, 8, originalWay);
-    con.SetInputFile("dataset/data1.txt");
-    printf("%d", con.Excutes());
+    con.SetInputFile("data1.txt");
+    int re = con.Excutes();
+    printf("%d", re);
 }

@@ -1,3 +1,4 @@
+#include "elevator.h"
 using namespace std;
 
 int Elevator::GetFloorTarget()
