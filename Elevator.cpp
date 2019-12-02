@@ -139,6 +139,3 @@ void Elevator::SetMiddleTarget(int MTarget)
 {
     middleTarget = MTarget;
 }
-int main()
-{
-}

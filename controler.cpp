@@ -1,5 +1,5 @@
 #include "controler.h"
-//#include "Elevator.h"
+//#include "elevator.h"
 using namespace std;
 
 Controller::Controller(int floors, int elevatorCount, int maxPerson, distributers dis)
@@ -71,6 +71,7 @@ int Controller::Excutes()
     fclose(inputFile);
     fclose(logFile);
     //fin
+    return timer;
 }
 bool Controller::bAllFinished()
 {
@@ -378,7 +379,7 @@ void Controller::OriginalWay()
     ElevatorStatus tempStatus;
     for (int i = 0; i < elevatorCount; i++)
     {
-        if (!elevators.at(i)->IsFull())
+        if (!(elevators.at(i)->IsFull()))
         {
             tempFloor = elevators[i]->GetCurrentFloor();
             tempStatus = elevators[i]->GetStatus();
@@ -542,5 +543,5 @@ int main()
     //Controller con(25, 2, 8, OurWay);
     Controller con(25, 2, 8, originalWay);
     con.SetInputFile("dataset/data1.txt");
-    con.Excutes();
+    printf("%d", con.Excutes());
 }
