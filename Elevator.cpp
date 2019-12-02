@@ -1,4 +1,4 @@
-#include "Elevator.h"
+#include "elevator.h"
 using namespace std;
 
 int Elevator::GetFloorTarget()
@@ -25,7 +25,7 @@ void Elevator::FindNewTarget()
             else if (i < currentFloor)
             {
                 status = DownWard;
-                currenFloor --;
+                currentFloor --;
             }
             break;
         }
@@ -44,6 +44,7 @@ void Elevator::FindNewTarget()
 void Elevator ::DoWork()
 {
     int tempPersonCount;
+   // ElevatorStatus status = this->status;
     //change status that peoplecount, targets, and things following status
     if (status == STOP)
     {
@@ -85,13 +86,13 @@ void Elevator ::DoWork()
         status = STOP;
     }
 }
-Elevator ::Elevator(int Max, int maxFloor)
+Elevator ::Elevator(int max, int maxFloor)
 {
-    this->MAX = Max;
+    this->maxPerson = max;
     this->maxFloor = maxFloor;
-    peopleCount = 0;
+    this->peopleCount = 0;
     status = STOP;
-    currentFloor = 0;
+    this->currentFloor = 0;
 }
 ElevatorStatus Elevator ::GetStatus()
 {
@@ -99,7 +100,7 @@ ElevatorStatus Elevator ::GetStatus()
 }
 bool Elevator ::IsFull()
 {
-    return peopleCount >= MAX;
+    return peopleCount >=maxPerson;
 }
 vector<int> Elevator::GetWorks()
 {

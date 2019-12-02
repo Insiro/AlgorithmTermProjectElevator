@@ -1,36 +1,36 @@
 #include <iostream>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
-#include <map>
+//#include <map>
 #include <string>
 #include <time.h>
-#include <tuple>
-#include <vector>
-#include<algorithm>
-#include "Elevator.h"
+//#include <tuple>
+//#include <vector>
+#include <algorithm>
+#include "elevator.h"
 using namespace std;
-
+enum distributers
+{
+    originalWay=0,
+    OurWay
+};
 class Controller
 {
-    enum distributers
-    {
-        originalWay,
-        OurWay
-    };
-
 private:
     int elevatorCount, maxFloor, distributerCount;
     int timer;
     int maxPerson;
-    map<int, Elevator *> elevators;
-    map<int, vector<int>> jobsPerFloor;
+    //map<int, Elevator *> elevators;
+    vector<Elevator *> elevators;
+    //map<int, vector<int>> jobsPerFloor;
+    vector<vector<int> > jobsPerFloor;
     vector<int> jobsCountPerFloor;
     FILE *inputFile;
     FILE *logFile;
-    tuple<int /*timestamp*/, int/*Count*/,int/*start floor*/,int/*target floor*/> tempQueue;
+    tuple<int /*timestamp*/, int /*Count*/, int /*start floor*/, int /*target floor*/> tempQueue;
     distributers dist;
     void ourWay();
-    void originalWay();
+    void OriginalWay();
 
 public:
     Controller(int floors, int elevatorCount, int maxPerson, distributers dis);
@@ -38,7 +38,8 @@ public:
     void addLog();
     void DistributeJobs();
     void AddElevator();
-    void PushData(int eleNum, pair<int/*target floor*/, int/*person Count*/> data);
+    void PushData(int eleNum, int target);
+    void PushData(int eleNum, pair<int /*target floor*/, int /*person Count*/> data);
     bool IsJobEmpty();
     bool bAllFinished();
     int InsertJob(); //get data from input files
