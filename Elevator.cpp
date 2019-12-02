@@ -32,7 +32,7 @@ void Elevator::FindNewTarget()
     }
     if (status == STOP)
     {
-        if (middleTarget != NULL)
+        if (middleTarget != -1)
         {
             if (currentFloor > middleTarget)
                 status = UpWard;
@@ -111,7 +111,7 @@ void Elevator::AddWork(int target, int personCount)
     works.at(target) += personCount;
     peopleCount += personCount;
     if (middleTarget == floorTarget)
-        middleTarget = NULL;
+        middleTarget = -1;
 }
 void Elevator::AddWork(vector<pair<int, int>> newWorks)
 {
@@ -121,7 +121,7 @@ void Elevator::AddWork(vector<pair<int, int>> newWorks)
         peopleCount += newWorks.at(i).second;
     }
     if (middleTarget == floorTarget)
-        middleTarget = NULL;
+        middleTarget = -1;
 }
 int Elevator::GetPeopleCount()
 {

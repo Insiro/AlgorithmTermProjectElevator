@@ -5,6 +5,7 @@ using namespace std;
 Controller::Controller(int floors, int elevatorCount, int maxPerson, distributers dis)
 {
     dist = dis;
+    tempQueue = make_tuple(-1,0,0,0);
     this->maxPerson = maxPerson;
     this->maxFloor = maxFloor;
     this->elevatorCount = elevatorCount;
@@ -78,7 +79,7 @@ bool Controller::bAllFinished()
     //TODO : Check all work is finished
     for (int i = 0; i < elevatorCount; i++)
     {
-        if ((elevators[i])->GetMiddleTarget() != NULL)
+        if ((elevators[i])->GetMiddleTarget() != -1)
         {
             return false;
         }
@@ -536,7 +537,7 @@ int Controller ::GetClosestFloor(int CurrentFloor, ElevatorStatus status, bool i
             }
         }
     }
-    return NULL;
+    return -1;
 }
 int main()
 {
