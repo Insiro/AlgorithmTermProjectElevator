@@ -22,12 +22,12 @@ void Elevator::FindNewTarget()
             if (i > currentFloor)
             {
                 status = UpWard;
-                currentFloor ++;
+                currentFloor++;
             }
             else if (i < currentFloor)
             {
                 status = DownWard;
-                currentFloor --;
+                currentFloor--;
             }
             break;
         }
@@ -46,7 +46,7 @@ void Elevator::FindNewTarget()
 void Elevator ::DoWork()
 {
     int tempPersonCount;
-   // ElevatorStatus status = this->status;
+    // ElevatorStatus status = this->status;
     //change status that peoplecount, targets, and things following status
     if (status == STOP)
     {
@@ -61,12 +61,13 @@ void Elevator ::DoWork()
         // not have Wroks
         else
         {
-            if(floorTarget != currentFloor){
+            if (floorTarget != currentFloor)
+            {
                 //updateStatus to move Target
                 // 일이 있으나 stop 상태 -> 일을 방금 받은 상태
                 status = (currentFloor > floorTarget) ? DownWard : UpWard;
             }
-            else 
+            else
             {
                 //if (floorTarget == -1 || floorTarget == currentFloor)
                 //Elevator IDLE or Find new Target in list
@@ -94,6 +95,8 @@ Elevator ::Elevator(int max, int maxFloor)
     this->maxFloor = maxFloor;
     this->peopleCount = 0;
     status = STOP;
+    for (int i = 0; i < maxFloor; i++)
+        works.push_back(0);
     this->currentFloor = 0;
 }
 ElevatorStatus Elevator ::GetStatus()
@@ -102,7 +105,7 @@ ElevatorStatus Elevator ::GetStatus()
 }
 bool Elevator ::IsFull()
 {
-    return peopleCount >=maxPerson;
+    return peopleCount >= maxPerson;
 }
 vector<int> Elevator::GetWorks()
 {
@@ -147,19 +150,18 @@ Controller::Controller(int floors, int elevatorCount, int maxPerson, distributer
     tempTime = -1;
     //tempQueue = make_tuple(-1,0,0,0);
     this->maxPerson = maxPerson;
-    this->maxFloor = maxFloor;
+    this->maxFloor = floors;
     this->elevatorCount = elevatorCount;
     timer = 0;
-    printf("%d \n",jobsPerFloor.size());
-    for(int i=0;i<maxFloor;i++){
+    for (int i = 0; i < maxFloor; i++)
+    {
         vector<int> a(0);
         jobsPerFloor.push_back(a);
         jobsCountPerFloor.push_back(0);
     }
-    printf("%d \n",jobsCountPerFloor.size());
-    printf("%d \n",jobsPerFloor.size());
     for (int i = 0; i < elevatorCount; i++)
     {
+
         elevators.push_back(new Elevator(maxPerson, maxFloor));
     }
 }
@@ -178,8 +180,8 @@ bool Controller ::IsJobEmpty()
 int Controller::InsertJob()
 {
 
-    if( tempTime ==-1){
-
+    if (tempTime == -1)
+    {
     }
     if (timer == tempTime)
     {
@@ -194,8 +196,8 @@ int Controller::InsertJob()
     while (true)
     {
         fscanf(inputFile, "%d %d %d %d", &time, &Count, &init, &targets);
-        init -=1;
-        targets -=1;
+        init -= 1;
+        targets -= 1;
         if (time != timer)
         {
             tempTime = time;
@@ -207,8 +209,8 @@ int Controller::InsertJob()
         jobsPerFloor.at(init).push_back(targets);
         jobsCountPerFloor[init]++;
     }
-    for(int i=0;i<maxFloor;i++)
-        sort(jobsPerFloor.at(i).begin(),jobsPerFloor.at(i).end());
+    for (int i = 0; i < maxFloor; i++)
+        sort(jobsPerFloor.at(i).begin(), jobsPerFloor.at(i).end());
     return 1;
 }
 int Controller::Excutes()
@@ -223,9 +225,10 @@ int Controller::Excutes()
         {
             elevators[i]->DoWork();
         }
-        addLog();
+        //addLog();
         timer++;
     }
+
     fclose(inputFile);
     fclose(logFile);
     //fin
@@ -234,6 +237,7 @@ int Controller::Excutes()
 bool Controller::bAllFinished()
 {
     //TODO : Check all work is finished
+    printf("c1");
     for (int i = 0; i < elevatorCount; i++)
     {
         if ((elevators[i])->GetMiddleTarget() != -1)
@@ -379,12 +383,12 @@ void Controller::ourWay()
 
     for (int i = 0; i < elevatorCount; i++)
     {
-int j,tempFloor;
-ElevatorStatus tempStatus;
+        int j, tempFloor;
+        ElevatorStatus tempStatus;
         if (!elevators[i]->IsFull())
         {
-             tempFloor = elevators[i]->GetCurrentFloor();
-             tempStatus = elevators[i]->GetStatus();
+            tempFloor = elevators[i]->GetCurrentFloor();
+            tempStatus = elevators[i]->GetStatus();
             //TODO:make algorithm for distribute works
             if (tempStatus == UpWard)
             {
@@ -596,10 +600,10 @@ void Controller::OriginalWay()
                 }
                 else
                 {
-                    for (j = 0; jobsPerFloor[tempFloor].at(j) < tempFloor; j++)
+                    for (j = 0; j < jobsPerFloor[tempFloor].size() && jobsPerFloor[tempFloor].at(j) < tempFloor; j++)
                         ;
                     int pre = j;
-                    for (; jobsPerFloor[tempFloor].at(j) < tempFloor + 1; j++)
+                    for (; j < jobsPerFloor[tempFloor].size() && jobsPerFloor[tempFloor].at(j) < tempFloor + 1; j++)
                         ;
                     int next = jobsPerFloor[tempFloor].size() - j;
                     if (pre < next)
@@ -696,6 +700,7 @@ int Controller ::GetClosestFloor(int CurrentFloor, ElevatorStatus status, bool i
     }
     return -1;
 }
+
 int main()
 {
     //Controller con(25, 2, 8, OurWay);
