@@ -81,7 +81,7 @@ public:
     void DistributeJobs();
     void AddElevator();
     void PushData(int eleNum, int target);
-    void PushData(int eleNum, pair<int /*target floor*/, int /*person Count*/> data);
+    //void PushData(int eleNum, pair<int /*target floor*/, int /*person Count*/> data);
     bool IsJobEmpty();
     bool bAllFinished();
     int InsertJob(); //get data from input files

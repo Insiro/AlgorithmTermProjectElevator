@@ -48,6 +48,7 @@ void Elevator ::DoWork()
     int tempPersonCount;
     // ElevatorStatus status = this->status;
     //change status that peoplecount, targets, and things following status
+        printf("%d\n",status);
     if (status == STOP)
     {
         //teat works
@@ -172,10 +173,10 @@ bool Controller ::IsJobEmpty()
     {
         if (jobsCountPerFloor[i] != 0)
         {
-            return true;
+            return false;
         }
     }
-    return false;
+    return true;
 }
 int Controller::InsertJob()
 {
@@ -219,12 +220,16 @@ int Controller::Excutes()
     //TODO : Make excuter code and return finished Time
     while (!bAllFinished())
     {
+        printf("ins\n");
         InsertJob();
+        printf("dis\n");
         DistributeJobs();
         for (int i = 0; i < elevatorCount; i++)
         {
+        printf("doWork\n");
             elevators[i]->DoWork();
         }
+        printf("asd");
         //addLog();
         timer++;
     }
@@ -237,11 +242,16 @@ int Controller::Excutes()
 bool Controller::bAllFinished()
 {
     //TODO : Check all work is finished
-    printf("c1");
+    printf("_\n");
+    if (feof(inputFile))
+        {
+            printf("eof\n");
+            return true;}
     for (int i = 0; i < elevatorCount; i++)
     {
-        if ((elevators[i])->GetMiddleTarget() != -1)
+        if ((elevators[i])->GetMiddleTarget() == elevators[i]->GetFloorTarget() && elevators[i]->GetFloorTarget() == elevators[i]->GetCurrentFloor())
         {
+            printf("f\n");
             return false;
         }
     }
@@ -313,20 +323,21 @@ void Controller::addLog()
     fprintf(logFile, "\n");
 }
 
-void Controller::PushData(int elNum, pair<int, int> data)
-{
-    for (int i = 0; i < data.second; i++)
-    {
-        if (elevators[elNum]->IsFull())
-            return;
-        (elevators[elNum])->AddWork(data.first, 1);
-        //(elevators.find(elNum))->AddWork(data.first, data.second);
-        jobsCountPerFloor[data.first] -= 1; // 엘리베이터에 더해준 만큼 남아있는 사람 수를 줄인다.
-    }
-}
+// void Controller::PushData(int elNum, pair<int, int> data)
+// {
+//     for (int i = 0; i < data.second; i++)
+//     {
+//         if (elevators[elNum]->IsFull())
+//             return;
+//         (elevators[elNum])->AddWork(data.first, 1);
+//         //(elevators.find(elNum))->AddWork(data.first, data.second);
+//         jobsCountPerFloor[data.first] -= 1; // 엘리베이터에 더해준 만큼 남아있는 사람 수를 줄인다.
+//     }
+// }
 
 void Controller::PushData(int elNum, int targetFloor)
 {
+    printf("das\n");
     if (!elevators[elNum]->IsFull())
     {
         (elevators[elNum])->AddWork(targetFloor, 1);
@@ -541,25 +552,32 @@ void Controller::OriginalWay()
     ElevatorStatus tempStatus;
     for (int i = 0; i < elevatorCount; i++)
     {
+            printf("sad%d\n",(elevators.at(i)->IsFull()));
         if (!(elevators.at(i)->IsFull()))
         {
             tempFloor = elevators[i]->GetCurrentFloor();
             tempStatus = elevators[i]->GetStatus();
+            printf("%d\n",tempStatus);
             //TODO:make Inputs
             if (tempStatus == UpWard)
             {
                 for (j = 0; j < tempFloor; j++)
                     ;
-                while (j < jobsPerFloor[tempFloor].size())
+                while (j < jobsPerFloor[tempFloor].size()&&j>=0&&jobsPerFloor[tempFloor].size()>0  )
                 {
                     if (elevators[i]->IsFull())
                     {
                         break;
                     }
+                    printf("ct%d\n",jobsPerFloor[tempFloor].size());
                     PushData(i, jobsPerFloor[tempFloor].at(j));
+                    printf("cs\n");
                     jobsPerFloor[tempFloor].erase(jobsPerFloor[tempFloor].begin() + j);
+                    printf("_\n");
                     //CheckMe : Counting is work?
+                    j--;
                 }
+                printf("sa");
             }
             else if (tempStatus == DownWard)
             {
